@@ -19,13 +19,17 @@ const Navbar: React.FC = () => {
 
   return (
     <div>
-      {/* תפריט ניווט */}
+      // {/* תפריט ניווט */}
       <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
         <div className="container">
           {/* שם האתר בצד שמאל */}
-          {/* שם האתר בצד שמאל, הוספת תמונה לחיצה */}
           <Link className="navbar-brand" to="/Management" onClick={handleCloseNavbar}>
-            <img src="../images/favicon.ico" alt="מצפה נוף" className="mb-0" style={{ width: '100px' }} />
+          <img 
+         className="rounded-circle" 
+         alt="מצפה נוף" 
+         style={{ width: '50px', height: '50px', objectFit: 'cover' }} 
+         src="/favicon.ico" 
+/>
           </Link>
 
           {/* כפתור המבורגר */}
