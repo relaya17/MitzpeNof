@@ -15,8 +15,17 @@ import Residents from "../pages/ResidentForm";
 import ForSale from "../pages/ForSale";
 import RepairTracking from "../pages/RepairTracking";
 import ResidentForm from "../pages/ResidentForm";
+import ThankYouPage from "../pages/thankyou/Thankyou";
+import PrivacyPolicy from "../seqerty/PrivacyPolicy";
+import TermsAndConditions from "../seqerty/TermsAndConditions";
 
-
+import SignUpPage from "../pages/users/UI/SignUpPage";
+import UsersListPage from "../pages/users/UI/UserDetailsPage";
+import UserDetailsPage from "../pages/users/UI/UserDetailsPage";
+import UsersPage from "../pages/users/UI/UsersPage";
+import UserManagement from "../pages/users/UI/UserManagement";
+import CreateAdminPassword from "../pages/users/UI/CreateAdminPassword";
+import ChangeAdminPassword from "../pages/users/UI/ChangeAdminPassword";
 
 const AppRoutes = () => {
   useEffect(() => {
@@ -52,6 +61,14 @@ const AppRoutes = () => {
        <Route path="/ForRent" element={<ForRent />} />
       // <Route path="/ForSale" element={<ForSale />} />
       <Route path="/poolmaintenance" element={<PoolMaintenance />} />
+      <Route path="/thankyou" element={<ThankYouPage />} />
+      <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+      <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
+      <Route path="/SignUpPage" element={<SignUpPage />} />
+      <Route path="/userDetails/:email" element={<UserDetailsPage />} />
+      <Route path="/UsersPage" element={<UsersPage />} />
+        <Route path="/UserManagement" element={<UserManagement />} />
+        <Route path="/ChangeAdminPassword" element={<ChangeAdminPassword />} />
       <Route path="*" element={<Error404Page />} /> 
 
     </Routes>

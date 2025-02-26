@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { PDFDocument } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit';
-
+const usersRoutes = require("./routes/users");
 // הגדרת השרת
 const app = express();
 const port = 5000; // יצירת פורט 5000 לשרת
@@ -16,6 +16,7 @@ app.use(cors({
 // לאפשר פרסום נתונים כ-JSON
 app.use(express.json());
 
+app.use("/api", usersRoutes);
 // מערך לאחסון תשלומים
 let payments: { id: string; payer: string; amount: number }[] = [];
 

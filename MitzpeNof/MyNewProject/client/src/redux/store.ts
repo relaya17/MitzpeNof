@@ -11,7 +11,13 @@ import forSaleReducer from "../redux/slice/forSaleSlice";
 import forRentReducer from "../redux/slice/forRentSlice";
 import paymentReducer from '../redux/slice/PaymentSlice';
 import navbarReducer from '../redux/slice/navbarSlice'; // חיבור ה-navbar
+import usersReducer from "./usersSlice";
 import secondNavbarReducer from './slice/SecondNavbar';
+import signUpReducer from "../redux/slice/signUpSlice";
+import usersListReducer from "../redux/slice/usersListSlice";
+import userDetailsReducer from "../redux/slice/userDetailsSlice";
+
+
 
 export const store = configureStore({
   reducer: {
@@ -28,7 +34,10 @@ export const store = configureStore({
     payment: paymentReducer,
     navbar: navbarReducer, 
     secondNavbar: secondNavbarReducer, // הוספת ה-navbar החדש
-
+    users: usersReducer,
+    signUp: signUpReducer,
+    usersList: usersListReducer,
+    userDetails: userDetailsReducer,
   },
 });
 
