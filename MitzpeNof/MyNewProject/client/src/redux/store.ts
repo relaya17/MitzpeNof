@@ -11,9 +11,9 @@ import forSaleReducer from "../redux/slice/forSaleSlice";
 import forRentReducer from "../redux/slice/forRentSlice";
 import paymentReducer from '../redux/slice/PaymentSlice';
 import navbarReducer from '../redux/slice/navbarSlice'; // חיבור ה-navbar
-import usersReducer from "./usersSlice";
+import usersReducer from "../redux/slice/usersSlice";
 import secondNavbarReducer from './slice/SecondNavbar';
-import signUpReducer from "../redux/slice/signUpSlice";
+import signUpReducer from './slice/SignUpSlice';
 import usersListReducer from "../redux/slice/usersListSlice";
 import userDetailsReducer from "../redux/slice/userDetailsSlice";
 

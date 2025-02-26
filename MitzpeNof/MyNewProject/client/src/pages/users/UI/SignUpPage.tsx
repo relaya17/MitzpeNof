@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button, Container } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "../redux/store";
+import { AppDispatch } from "../UI";
 import { signUpUser } from "../redux/slice/SignUpSlice";
 
 const SignUpPage: React.FC = () => {
