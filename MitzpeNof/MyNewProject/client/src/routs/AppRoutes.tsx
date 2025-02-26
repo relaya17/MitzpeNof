@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes } from "react-router-dom";
 import ROUTES from "../routs/constants/routes";  // ייבוא הנתיבים מקובץ routes
 import Home from "../pages/Home";
 import NewResidentApproval from "../pages/NewResidentApproval";
@@ -23,6 +23,7 @@ import UsersPage from "../pages/users/UI/UsersPage";
 import UserManagement from "../pages/users/UI/UserManagement";
 import CreateAdminPassword from "../pages/users/UI/CreateAdminPassword";
 import ChangeAdminPassword from "../pages/users/UI/ChangeAdminPassword";
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 const AppRoutes = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -74,6 +75,7 @@ const AppRoutes = () => {
         <Route path={ROUTES.CREATE_ADMIN_PASSWORD} element={<CreateAdminPassword />} />
         <Route path={ROUTES.USER_DETAILS} element={<UserDetailsPage />} />
         <Route path={ROUTES.USERS_LIST} element={<UsersListPage />} />
+        <Route path={ROUTES.USERS_PAGE} element={<UsersPage />} />
         <Route path={ROUTES.USER_MANAGEMENT} element={<UserManagement />} />
         <Route path={ROUTES.CHANGE_ADMIN_PASSWORD} element={<ChangeAdminPassword />} />
         <Route path="*" element={<Error404Page />} />
