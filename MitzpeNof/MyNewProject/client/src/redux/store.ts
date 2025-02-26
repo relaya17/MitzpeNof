@@ -16,6 +16,7 @@ import secondNavbarReducer from './slice/SecondNavbar';
 import signUpReducer from './slice/SignUpSlice';
 import usersListReducer from "../redux/slice/usersListSlice";
 import userDetailsReducer from "../redux/slice/userDetailsSlice";
+import managementReducer from '../redux/slice/ManagementSlice'; // שים לב שהשנה את השם כאן
 
 
 
@@ -38,6 +39,7 @@ export const store = configureStore({
     signUp: signUpReducer,
     usersList: usersListReducer,
     userDetails: userDetailsReducer,
+   Management: managementReducer,
   },
 });
 
