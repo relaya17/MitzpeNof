@@ -1,14 +1,17 @@
-// src/store/gardeningSlice.ts
+// src/redux/gardeningSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+interface Task {
+  date: string;
+  wateringAmount: string;
+  soilCheck: string;
+  task: string;
+  treatmentType: string[];
+  treatmentDetails: string;
+}
+
 interface GardeningState {
-  tasks: {
-    id: number;
-    date: string;
-    wateringAmount: string;
-    soilCheck: string;
-    task: string;
-  }[];
+  tasks: Task[];
 }
 
 const initialState: GardeningState = {
@@ -19,9 +22,8 @@ const gardeningSlice = createSlice({
   name: 'gardening',
   initialState,
   reducers: {
-    addTask: (state, action: PayloadAction<{ date: string; wateringAmount: string; soilCheck: string; task: string }>) => {
-      const newTask = { id: Date.now(), ...action.payload };
-      state.tasks.push(newTask);
+    addTask: (state, action: PayloadAction<Task>) => {
+      state.tasks.push(action.payload);
     },
   },
 });
