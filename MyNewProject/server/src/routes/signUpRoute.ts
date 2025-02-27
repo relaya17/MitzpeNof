@@ -1,8 +1,9 @@
 import express, { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
-import User from '../src/models/userModel'; 
+import User from '../models/userModel';
 
-const router = express.Router();
+
+
 
 router.post('/', async (req: Request, res: Response) => {
   const { name, email, password } = req.body;

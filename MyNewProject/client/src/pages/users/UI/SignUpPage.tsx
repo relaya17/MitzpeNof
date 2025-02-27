@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { signUpUser } from '../';
+import signUpUser from '../../../redux/slice/signUpSlice';
 import { Form, Button, Container, Alert } from 'react-bootstrap';
-import { RootState } from '';
+import { AppDispatch, RootState } from '../../../redux/store';
 
 const SignUpPage: React.FC = () => {
   const dispatch = useDispatch();
@@ -16,8 +16,8 @@ const SignUpPage: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(signUpUser(formData));
-  };
+    const dispatch = useDispatch<AppDispatch>();
+    dispatch(signUpUser(formData));};
 
   return (
     <Container style={{ maxWidth: '500px', marginTop: '50px' }}>

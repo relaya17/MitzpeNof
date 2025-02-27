@@ -2,14 +2,20 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { PDFDocument } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit';
-import paymentsRoutes from './routes/payments'; // Adjust the path as necessary
 import User from './models/userModel';
-import signUpRoute from '../src/signUp'; // עדכון הנתיב אם צריך
+import signUpRoute from '../src/signUp';
+import { addPayment, deletePayment, getPayments } from './controllers/paymentController';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
+interface PaymentRequestBody {
+  payer: string;
+  amount: number;
+}
 // הגדרת השרת
 const app = express();
 const port = 5000; // יצירת פורט 5000 לשרת
-
+dotenv.config();
 // לאפשר בקשות מ-CORS
 app.use(cors({
   origin: 'http://localhost:3000', // שים פה את כתובת הקליינט שלך
@@ -17,31 +23,19 @@ app.use(cors({
 }));
 
 app.use(express.json());
-app.use('/api/payments', paymentsRoutes);
 
-// שימוש בראוט להרשמה
 app.use('/api/signup', signUpRoute);
 
-app.post('/api/signup', async (req: Request, res: Response) => {
-  const { name, email, password } = req.body;
-  
-  try {
-    // כאן תבצע את הפעולה להוסיף את המשתמש למסד הנתונים
-    // לדוגמה, שימוש ב-Mongoose לשמירת משתמש חדש
-    const newUser = new User({ name, email, password });
-    await newUser.save();
-    res.status(201).json({ message: 'User created successfully' });
-  } catch (err) {
-    res.status(500).json({ message: 'Error while creating user' });
-  }
-});
+// התחברות למסד הנתונים
+mongoose.connect('mongodb://localhost:27017/your_database_name')
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
+// נתיבים עבור פונקציות התשלומים
+app.get('/api/payments', getPayments);
+app.post('/api/payments', addPayment);
+app.delete('/api/payments/:id', deletePayment);
 
-// לאפשר פרסום נתונים כ-JSON
-app.use(express.json());
-
-// מערך לאחסון תשלומים
-let payments: { id: string; payer: string; amount: number }[] = [];
 
 // פונקציה להפקת קבלה כ-PDF
 export const generateReceipt = async (payer: string, amount: number, chairmanName: string) => {
@@ -67,48 +61,12 @@ export const generateReceipt = async (payer: string, amount: number, chairmanNam
   }
 };
 
-// קריאה לקבלת כל התשלומים
-app.get('/api/payments', (req: Request, res: Response) => {
-  try {
-    res.status(200).json(payments);
-  } catch (error) {
-    res.status(500).json({ error: 'Error fetching payments' });
-  }
-});
 
-// קריאה להוספת תשלום
-app.post('/api/payments', async (req: Request, res: Response) => {
-  try {
-    const { payer, amount } = req.body;
-    const id = Math.random().toString(36).substring(7);
-    const newPayment = { id, payer, amount };
-    payments.push(newPayment);
 
-    const chairmanName = "ישראל ישראלי"; 
-    const pdfBuffer = await generateReceipt(payer, amount, chairmanName);
-    res.status(201).json({ payment: newPayment, receipt: pdfBuffer });
-  } catch (error) {
-    res.status(500).json({ error: 'Error processing payment and generating receipt' });
-  }
-});
 
 // קריאה למחיקת תשלום
 // קריאה להוספת תשלום
-app.post('/api/payments', async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { payer, amount } = req.body;
-    const id = Math.random().toString(36).substring(7);
-    const newPayment = { id, payer, amount };
-    payments.push(newPayment);
 
-    const chairmanName = "ישראל ישראלי"; 
-    const pdfBuffer = await generateReceipt(payer, amount, chairmanName);
-    res.status(201).json({ payment: newPayment, receipt: pdfBuffer });
-  } catch (error) {
-    console.error('Error processing payment and generating receipt:', error);
-    res.status(500).json({ error: 'Error processing payment and generating receipt' });
-  }
-});
 
 
 // שמירה על השרת
