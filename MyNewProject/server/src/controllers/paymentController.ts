@@ -1,22 +1,36 @@
-// src/controllers/paymentController.ts
 import { Request, Response } from 'express';
-import { generateReceipt } from '../utils/pdfUtils';
+import Payment from '../models/paymentModel';
+import { generateReceipt } from '../server';
 
-let payments: { id: string; payer: string; amount: number }[] = [];
-
-export const createReceipt = async (req: Request, res: Response) => {
-  const { payer, amount } = req.body;
-  const id = Math.random().toString(36).substring(7);  
-  payments.push({ id, payer, amount });
-  const chairmanName = "ישראל ישראלי";
-
+export const getPayments = async (req: Request, res: Response) => {
   try {
-    const pdfBuffer = await generateReceipt(payer, amount, chairmanName);
-    res.set({
-      'Content-Type': 'application/pdf',
-      'Content-Disposition': `attachment; filename="receipt-${id}.pdf"`
-    }).status(201).send(pdfBuffer);
+    const payments = await Payment.find();
+    res.status(200).json(payments);
   } catch (error) {
-    res.status(500).json({ error: 'Error generating receipt PDF' });
+    res.status(500).json({ error: 'Error fetching payments' });
+  }
+};
+
+export const addPayment = async (req: Request, res: Response) => {
+  try {
+    const { payer, amount } = req.body;
+    const newPayment = new Payment({ payer, amount });
+    await newPayment.save();
+
+    const chairmanName = "ישראל ישראלי";
+    const pdfBuffer = await generateReceipt(payer, amount, chairmanName);
+    res.status(201).json({ payment: newPayment, receipt: pdfBuffer });
+  } catch (error) {
+    res.status(500).json({ error: 'Error processing payment and generating receipt' });
+  }
+};
+
+export const deletePayment = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    await Payment.findByIdAndDelete(id);
+    res.status(200).json({ message: 'Payment deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Error deleting payment' });
   }
 };

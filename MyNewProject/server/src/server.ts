@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { PDFDocument } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit';
+import paymentsRoutes from './routes/payments'; // Adjust the path as necessary
 
 // הגדרת השרת
 const app = express();
@@ -12,6 +13,9 @@ app.use(cors({
   origin: 'http://localhost:3000', // שים פה את כתובת הקליינט שלך
   methods: ['GET', 'POST', 'DELETE']
 }));
+
+app.use(express.json());
+app.use('/api/payments', paymentsRoutes);
 
 // לאפשר פרסום נתונים כ-JSON
 app.use(express.json());

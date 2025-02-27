@@ -1,17 +1,22 @@
 import { configureStore } from '@reduxjs/toolkit';
-import employeesReducer from './slice/employeesSlice';
-import gardeningReducer from './slice/gardeningSlice';
-import poolMaintenanceReducer from './slice/poolMaintenanceSlice';
-import repairTrackingReducer from './slice/repairTrackingSlice';
-import newResidentApprovalReducer from './slice/newResidentApprovalSlice';
-import blogReducer from './slice/blogSlice';
-import votingReducer from './slice/votingSlice';
-import settingsReducer from "./slice/settingsSlice";
-import forSaleReducer from "./slice/forSaleSlice";
-import forRentReducer from "./slice/forRentSlice";
-import paymentReducer from './slice/PaymentSlice';
-import navbarReducer from './slice/navbarSlice'; // חיבור ה-navbar
+import employeesReducer from '../redux/slice/employeesSlice';
+import gardeningReducer from '../redux/slice/gardeningSlice';
+import poolMaintenanceReducer from '../redux/slice/poolMaintenanceSlice';
+import repairTrackingReducer from '../redux/slice/repairTrackingSlice';
+import newResidentApprovalReducer from '../redux/slice/newResidentApprovalSlice';
+import blogReducer from '../redux/slice/blogSlice';
+import votingReducer from '../redux/slice/votingSlice';
+import settingsReducer from "../redux/slice/settingsSlice";
+import forSaleReducer from "../redux/slice/forSaleSlice";
+import forRentReducer from "../redux/slice/forRentSlice";
+import paymentReducer from '../redux/slice/PaymentSlice';
+import navbarReducer from '../redux/slice/navbarSlice';
+import usersReducer from "../redux/slice/usersSlice";
 import secondNavbarReducer from './slice/SecondNavbar';
+import signUpReducer from './slice/signUpSlice';
+import usersListReducer from "../redux/slice/usersListSlice";
+import userDetailsReducer from "../redux/slice/userDetailsSlice";
+import managementReducer from '../redux/slice/ManagementSlice'; // שים לב שהשנה את השם כאן
 
 export const store = configureStore({
   reducer: {
@@ -28,7 +33,11 @@ export const store = configureStore({
     payment: paymentReducer,
     navbar: navbarReducer, 
     secondNavbar: secondNavbarReducer, // הוספת ה-navbar החדש
-
+    users: usersReducer,
+    signUp: signUpReducer,
+    usersList: usersListReducer,
+    userDetails: userDetailsReducer,
+    management: managementReducer, // הוספת ניהול התושבים
   },
 });
 
