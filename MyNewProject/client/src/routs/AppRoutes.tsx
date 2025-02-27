@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+// AppRoutes.tsx
+import React, { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import ROUTES from "../routs/routes";  // ייבוא הנתיבים מקובץ routes
 import Home from "../pages/Home";
@@ -24,7 +25,7 @@ import UserManagement from "../pages/users/UI/UserManagement";
 import CreateAdminPassword from "../pages/users/UI/CreateAdminPassword";
 import ChangeAdminPassword from "../pages/users/UI/ChangeAdminPassword";
 
-const AppRoutes = () => {
+const AppRoutes: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -49,18 +50,17 @@ const AppRoutes = () => {
       <Routes>
         <Route path={ROUTES.HOME} element={<Home />} />
         <Route path={ROUTES.REGISTER} element={<SignUpPage />} />
-        <Route path={ROUTES.RESIDENT_FORM} element={<ResidentForm
-          name={""}
-          age={undefined}
-          familyStatus={""}
-          apartment={""}
-          onSubmit={() => {}}
-          setName={() => {}}
-          setAge={() => {}}
-          setFamilyStatus={() => {}}
-          setApartment={() => {}}
-          isEdit={false}
-        />} />
+        <Route path={ROUTES.RESIDENT_FORM} element={<ResidentForm name={""} age={undefined} familyStatus={""} apartment={""} onSubmit={function (): void {
+          throw new Error("Function not implemented.");
+        } } setName={function (value: string): void {
+          throw new Error("Function not implemented.");
+        } } setAge={function (value: number | undefined): void {
+          throw new Error("Function not implemented.");
+        } } setFamilyStatus={function (value: string): void {
+          throw new Error("Function not implemented.");
+        } } setApartment={function (value: string): void {
+          throw new Error("Function not implemented.");
+        } } isEdit={false} />} />
         <Route path={ROUTES.EMPLOYEE_MANAGEMENT} element={<EmployeeManagement />} />
         <Route path={ROUTES.NEW_RESIDENT_APPROVAL} element={<NewResidentApproval />} />
         <Route path={ROUTES.REPAIR_TRACKING} element={<RepairTracking />} />
@@ -76,6 +76,7 @@ const AppRoutes = () => {
         <Route path={ROUTES.USERS_LIST} element={<UsersListPage />} />
         <Route path={ROUTES.USER_MANAGEMENT} element={<UserManagement />} />
         <Route path={ROUTES.CHANGE_ADMIN_PASSWORD} element={<ChangeAdminPassword />} />
+        <Route path={ROUTES.SIGN_UP} element={<SignUpPage />} />
         <Route path="*" element={<Error404Page />} />
       </Routes>
 

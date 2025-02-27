@@ -1,53 +1,66 @@
-// redux/slice/SignUpSlice.ts
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { User } from '../types/types';
 
-interface FormData {
-  name: string;
-  email: string;
-  password: string;
-}
-
-interface SignUpState {
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+export type SignUpState = {
+  user: User | null;
+  status: 'idle' | 'loading' | 'success' | 'error';
   error: string | null;
-}
+};
 
 const initialState: SignUpState = {
+  user: null,
   status: 'idle',
   error: null,
 };
 
 export const signUpUser = createAsyncThunk(
-  "signUp/signUpUser",
-  async (userData: FormData, { rejectWithValue }) => {
+  'signUp/signUpUser',
+  async (formData: { name: string; email: string; password: string }, { rejectWithValue }) => {
     try {
-      const response = await axios.post("/api/signup", userData);
-      return response.data;
+      const response = await fetch('http://localhost:5000/api/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+      if (!response.ok) {
+        throw new Error('שגיאה בהירשמות');
+      }
+      const data = await response.json();
+      return data.user;
     } catch (error: any) {
-      return rejectWithValue(error.response.data.message || 'שגיאה ברישום');
+      return rejectWithValue(error.message);
     }
   }
 );
 
 const signUpSlice = createSlice({
-  name: "signUp",
+  name: 'signUp',
   initialState,
-  reducers: {},
+  reducers: {
+    clearUser: (state) => {
+      state.user = null;
+      state.status = 'idle';
+      state.error = null;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(signUpUser.pending, (state) => {
         state.status = 'loading';
         state.error = null;
       })
-      .addCase(signUpUser.fulfilled, (state) => {
-        state.status = 'succeeded';
+      .addCase(signUpUser.fulfilled, (state, action: PayloadAction<User>) => {
+        state.status = 'success';
+        state.user = action.payload;
       })
       .addCase(signUpUser.rejected, (state, action) => {
-        state.status = 'failed';
+        state.status = 'error';
         state.error = action.payload as string;
       });
   }
 });
 
+export const { clearUser } = signUpSlice.actions;
 export default signUpSlice.reducer;

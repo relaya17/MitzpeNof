@@ -19,6 +19,7 @@ const ROUTES = {
     USERS_LIST: "/UsersListPage",
     USER_MANAGEMENT: "/UserManagement",
     CHANGE_ADMIN_PASSWORD: "/ChangeAdminPassword",
+    SIGN_UP: '/sign-up',
   };
   
   export default ROUTES;

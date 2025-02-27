@@ -4,7 +4,7 @@ import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActiveMenu } from '../redux/slice/SecondNavbar';
 import { AppDispatch, RootState } from '../redux/store';
-import { NavItem } from '../types/NavItem';
+import { NavItem } from '../../../server/src/types/NavItem';
 
 const NavigationBar: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();

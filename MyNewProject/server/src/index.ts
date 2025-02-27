@@ -1,6 +1,4 @@
-// src/servers/index.ts
 import express, { Request, Response } from 'express';
-import signUpRoute from '../src/signUp'; // Adjust the path as necessary
 import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
@@ -23,20 +21,6 @@ app.use(cors({
   methods: ['GET', 'POST', 'DELETE']
 }));
 app.use(express.json());
-
-// שימוש בראוט להרשמה
-app.use('/api/auth', signUpRoute);
-
-mongoose.connect(DB_URL)
-  .then(() => {
-    console.log('Connected to MongoDB');
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-  })
-  .catch((err) => {
-    console.error('MongoDB connection error:', err);
-  });
-
-
 
 
 // מערך לאחסון תשלומים

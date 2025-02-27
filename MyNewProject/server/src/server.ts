@@ -3,6 +3,8 @@ import cors from 'cors';
 import { PDFDocument } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit';
 import paymentsRoutes from './routes/payments'; // Adjust the path as necessary
+import User from './models/userModel';
+import signUpRoute from '../src/signUp'; // עדכון הנתיב אם צריך
 
 // הגדרת השרת
 const app = express();
@@ -16,6 +18,24 @@ app.use(cors({
 
 app.use(express.json());
 app.use('/api/payments', paymentsRoutes);
+
+// שימוש בראוט להרשמה
+app.use('/api/signup', signUpRoute);
+
+app.post('/api/signup', async (req: Request, res: Response) => {
+  const { name, email, password } = req.body;
+  
+  try {
+    // כאן תבצע את הפעולה להוסיף את המשתמש למסד הנתונים
+    // לדוגמה, שימוש ב-Mongoose לשמירת משתמש חדש
+    const newUser = new User({ name, email, password });
+    await newUser.save();
+    res.status(201).json({ message: 'User created successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error while creating user' });
+  }
+});
+
 
 // לאפשר פרסום נתונים כ-JSON
 app.use(express.json());

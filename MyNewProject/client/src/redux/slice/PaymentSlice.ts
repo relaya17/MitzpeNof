@@ -1,55 +1,36 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-
-export const fetchPayments = createAsyncThunk('payments/fetchPayments', async () => {
-  const response = await axios.get('http://localhost:5000/api/payments');
-  return response.data;
-});
-
-export const addPayment = createAsyncThunk('payments/addPayment', async (payment: { payer: string, amount: number }) => {
-  const response = await axios.post('http://localhost:5000/api/payments', payment);
-  return response.data;
-});
-
-export const deletePayment = createAsyncThunk('payments/deletePayment', async (id: string) => {
-  await axios.delete(`http://localhost:5000/api/payments/${id}`);
-  return id;
-});
-
-interface Payment {
-  id: string;
-  payer: string;
-  amount: number;
-}
+// redux/slice/PaymentSlice.ts
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface PaymentState {
-  payments: Payment[];
-  loading: boolean;
-  error: string | null;
+  payer: string;
+  amount: number;
+  status: string;
 }
 
 const initialState: PaymentState = {
-  payments: [],
-  loading: false,
-  error: null,
+  payer: '',
+  amount: 0,
+  status: 'pending'
 };
 
 const paymentSlice = createSlice({
-  name: 'payments',
+  name: 'payment',
   initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchPayments.fulfilled, (state, action) => {
-        state.payments = action.payload;
-      })
-      .addCase(addPayment.fulfilled, (state, action) => {
-        state.payments.push(action.payload);
-      })
-      .addCase(deletePayment.fulfilled, (state, action) => {
-        state.payments = state.payments.filter(payment => payment.id !== action.payload);
-      });
+  reducers: {
+    setPaymentDetails: (state, action: PayloadAction<{ payer: string; amount: number }>) => {
+      state.payer = action.payload.payer;
+      state.amount = action.payload.amount;
+    },
+    clearPaymentDetails: (state) => {
+      state.payer = '';
+      state.amount = 0;
+      state.status = 'pending';
+    }
   }
 });
 
+// ייצוא של הפעולות
+export const { setPaymentDetails, clearPaymentDetails } = paymentSlice.actions;
+
+// ייצוא של ה-reducer
 export default paymentSlice.reducer;
