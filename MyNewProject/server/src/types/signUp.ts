@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
-import User from '../src/models/userModel'; // עדכון נתיב המודל
+import User from '../models/userModel'; // עדכון נתיב המודל
 
 const router = express.Router();
 

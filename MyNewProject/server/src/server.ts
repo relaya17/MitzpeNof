@@ -3,7 +3,7 @@ import cors from 'cors';
 import { PDFDocument } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit';
 import User from './models/userModel';
-import signUpRoute from '../src/signUp';
+import signUpRoute from './types/signUp';
 import { addPayment, deletePayment, getPayments } from './controllers/paymentController';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
