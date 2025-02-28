@@ -1,11 +1,15 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
 
-// יצירת מודל משתמש עם שם, אימייל, סיסמה
-const userSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+interface IPayment extends Document {
+  payer: string;
+  amount: number;
+}
+
+const paymentSchema = new Schema<IPayment>({
+  payer: { type: String, required: true },
+  amount: { type: Number, required: true }
 });
 
-const User = mongoose.model('User', userSchema);
-export default User;
+const Payment = mongoose.model<IPayment>('Payment', paymentSchema);
+
+export default Payment;

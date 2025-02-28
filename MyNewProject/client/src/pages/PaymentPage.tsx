@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPaymentDetails, addPayment } from '../redux/slice/PaymentSlice';
 import { RootState, AppDispatch } from '../redux/store';
@@ -18,8 +18,10 @@ const PaymentPage: React.FC = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (name === 'payer' || name === 'amount') {
-      dispatch(setPaymentDetails({ [name]: value }));
+    if (name === 'payer') {
+      dispatch(setPaymentDetails({ payer: value }));
+    } else if (name === 'amount') {
+      dispatch(setPaymentDetails({ amount: Number(value) }));
     } else {
       setCardDetails(prev => ({ ...prev, [name]: value }));
     }
@@ -31,7 +33,7 @@ const PaymentPage: React.FC = () => {
       setError('יש למלא את כל השדות');
       return;
     }
-
+  
     dispatch(addPayment({ payer: payment.payer, amount: payment.amount }));
     setError('');
     alert('תשלום בוצע בהצלחה!');
