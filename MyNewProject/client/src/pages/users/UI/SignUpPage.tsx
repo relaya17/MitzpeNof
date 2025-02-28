@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import signUpUser from '../../../redux/slice/signUpSlice';
+import { signUpUser } from '../../../redux/slice/signUpSlice';
 import { Form, Button, Container, Alert } from 'react-bootstrap';
 import { AppDispatch, RootState } from '../../../redux/store';
 
 const SignUpPage: React.FC = () => {
-  const dispatch = useDispatch();
-  const { status, user } = useSelector((state: RootState) => state.signUp);
+  const dispatch = useDispatch<AppDispatch>();
+  const { status, user, error } = useSelector((state: RootState) => state.signUp);
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -14,10 +14,10 @@ const SignUpPage: React.FC = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const dispatch = useDispatch<AppDispatch>();
-    dispatch(signUpUser(formData));};
+    dispatch(signUpUser(formData)); // שליחה ל-redux
+  };
 
   return (
     <Container style={{ maxWidth: '500px', marginTop: '50px' }}>
@@ -61,7 +61,7 @@ const SignUpPage: React.FC = () => {
         </Button>
       </Form>
 
-      {status === 'error' && <Alert variant="danger" className="mt-3">אירעה שגיאה בהירשמות</Alert>}
+      {status === 'error' && <Alert variant="danger" className="mt-3">{error}</Alert>}
       {status === 'success' && user && <Alert variant="success" className="mt-3">ברוך הבא, {user.name}!</Alert>}
     </Container>
   );

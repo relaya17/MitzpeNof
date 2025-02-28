@@ -1,13 +1,15 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-export interface IPayment extends Document {
+interface IPayment extends Document {
   payer: string;
   amount: number;
 }
 
-const PaymentSchema = new Schema({
+const paymentSchema = new Schema<IPayment>({
   payer: { type: String, required: true },
-  amount: { type: Number, required: true },
+  amount: { type: Number, required: true }
 });
 
-export default mongoose.model<IPayment>('Payment', PaymentSchema);
+const Payment = mongoose.model<IPayment>('Payment', paymentSchema);
+
+export default Payment;

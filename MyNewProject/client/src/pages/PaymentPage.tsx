@@ -1,21 +1,40 @@
-// src/pages/PaymentPage.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setPaymentDetails, clearPaymentDetails, addPayment } from '../redux/slice/PaymentSlice';
+import { setPaymentDetails, addPayment } from '../redux/slice/PaymentSlice';
 import { RootState, AppDispatch } from '../redux/store';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Alert } from 'react-bootstrap';
 
 const PaymentPage: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const payment = useSelector((state: RootState) => state.payment);
-  
+
+  const [cardDetails, setCardDetails] = useState({
+    cardNumber: '',
+    expiryDate: '',
+    cvv: ''
+  });
+
+  const [error, setError] = useState('');
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setPaymentDetails({ [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    if (name === 'payer' || name === 'amount') {
+      dispatch(setPaymentDetails({ [name]: value }));
+    } else {
+      setCardDetails(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(addPayment(payment)); // שולח את נתוני התשלום לשרת
+    if (!payment.payer || !payment.amount || !cardDetails.cardNumber || !cardDetails.expiryDate || !cardDetails.cvv) {
+      setError('יש למלא את כל השדות');
+      return;
+    }
+
+    dispatch(addPayment({ payer: payment.payer, amount: payment.amount }));
+    setError('');
+    alert('תשלום בוצע בהצלחה!');
   };
 
   return (
@@ -47,9 +66,9 @@ const PaymentPage: React.FC = () => {
         <Form.Group className="mb-3">
           <Form.Label>מספר כרטיס אשראי</Form.Label>
           <Form.Control
-            type="text"
+            type="password"
             name="cardNumber"
-            value={payment.cardNumber}
+            value={cardDetails.cardNumber}
             onChange={handleInputChange}
             required
           />
@@ -60,7 +79,7 @@ const PaymentPage: React.FC = () => {
           <Form.Control
             type="text"
             name="expiryDate"
-            value={payment.expiryDate}
+            value={cardDetails.expiryDate}
             onChange={handleInputChange}
             required
           />
@@ -69,9 +88,9 @@ const PaymentPage: React.FC = () => {
         <Form.Group className="mb-3">
           <Form.Label>CVV</Form.Label>
           <Form.Control
-            type="text"
+            type="password"
             name="cvv"
-            value={payment.cvv}
+            value={cardDetails.cvv}
             onChange={handleInputChange}
             required
           />
@@ -82,14 +101,9 @@ const PaymentPage: React.FC = () => {
         </Button>
       </Form>
 
-      {payment.paymentStatus === 'pending' && <p>מתבצע תשלום...</p>}
-      {payment.paymentStatus === 'completed' && (
-       <div>
-        <h3>תשלום בוצע בהצלחה!</h3>
-        <a href={`data:application/pdf;base64,${payment.receipt}`} download="receipt.pdf">הורד קבלה</a>
-       </div>
-   )}
-       {payment.paymentStatus === 'failed' && <p>הייתה שגיאה בתשלום, אנא נסה שוב.</p>}
-
+      {error && <Alert variant="danger">{error}</Alert>}
+    </div>
+  );
+};
 
 export default PaymentPage;
