@@ -82,11 +82,14 @@ const PaymentPage: React.FC = () => {
         </Button>
       </Form>
 
-      {payment.status === 'loading' && <p>מתבצע תשלום...</p>}
-      {payment.status === 'succeeded' && <div><h3>תשלום בוצע בהצלחה!</h3><a href={`data:application/pdf;base64,${payment.receipt}`} download="receipt.pdf">הורד קבלה</a></div>}
-      {payment.status === 'failed' && <p>היה שגיאה בתשלום, אנא נסה שוב.</p>}
-    </div>
-  );
-};
+      {payment.paymentStatus === 'pending' && <p>מתבצע תשלום...</p>}
+      {payment.paymentStatus === 'completed' && (
+       <div>
+        <h3>תשלום בוצע בהצלחה!</h3>
+        <a href={`data:application/pdf;base64,${payment.receipt}`} download="receipt.pdf">הורד קבלה</a>
+       </div>
+   )}
+       {payment.paymentStatus === 'failed' && <p>הייתה שגיאה בתשלום, אנא נסה שוב.</p>}
+
 
 export default PaymentPage;

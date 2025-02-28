@@ -1,12 +1,16 @@
 import express, { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
-import User from '../models/userModel';
+import User from '../models/userModel'; 
+const router = express.Router();
 
-
-
-
+// POST /api/signup
 router.post('/', async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
+
+  // בדיקה אם כל השדות קיימים
+  if (!name || !email || !password) {
+    return res.status(400).json({ message: 'נא למלא את כל השדות' });
+  }
 
   try {
     // בדיקה אם המשתמש כבר קיים
