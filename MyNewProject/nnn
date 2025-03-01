@@ -1,0 +1,109 @@
+; mkdir MyNewProject && cd MyNewProject
+; mkdir client server
+; npm init -y
+; npm install --save-dev concurrently
+
+
+; npm create vite@latest client -- --template react-ts
+; cd client
+; npm install react-router-dom react-bootstrap bootstrap redux react-redux @reduxjs/toolkit axios pdf-lib
+; התקנת ה-TypeScript Types (כדי למנוע שגיאות
+; npm install --save-dev @types/react @types/react-dom @types/react-redux @types/node
+
+
+; tsconfig.json {
+;     "compilerOptions": {
+;       "target": "ESNext",
+;       "lib": ["DOM", "ESNext"],
+;       "module": "ESNext",
+;       "moduleResolution": "Node",
+;       "jsx": "react-jsx",
+;       "strict": true,
+;       "esModuleInterop": true,
+;       "skipLibCheck": true,
+;       "forceConsistentCasingInFileNames": true
+;     },
+;     "include": ["src"]
+;   }
+;   cd ..
+;   mkdir server && cd server
+;   npm init -y
+;   npm install express mongoose cors dotenv axios
+;   npm install --save-dev typescript ts-node @types/node @types/express nodemon
+;   {
+;     "compilerOptions": {
+;       "target": "ESNext",
+;       "lib": ["ESNext"],
+;       "module": "CommonJS",
+;       "moduleResolution": "Node",
+;       "outDir": "dist",
+;       "rootDir": "src",
+;       "strict": true,
+;       "esModuleInterop": true
+;     },
+;     "include": ["src"]
+;   }
+;   גדרת package.json בשורש להפעלה
+;   "scripts": {
+;   "start": "concurrently \"npm run start-client\" \"npm run start-server\"",
+;   "start-client": "cd client && npm run dev",
+;   "start-server": "cd server && npm run dev"
+; }
+; npm install
+
+; npm start
+     
+
+
+
+
+
+; servercd ..
+; mkdir server && cd server
+; npm init -y
+   
+
+; npm install express mongoose cors dotenv axios
+
+; npm install --save-dev typescript ts-node @types/node @types/express nodemon
+
+; יצירת קובץ tsconfig.json לשרת
+; {
+;   "compilerOptions": {
+;     "target": "ESNext",
+;     "lib": ["ESNext"],
+;     "module": "CommonJS",
+;     "moduleResolution": "Node",
+;     "outDir": "dist",
+;     "rootDir": "src",
+;     "strict": true,
+;     "esModuleInterop": true
+;   },
+;   "include": ["src"]
+; }
+
+    
+
+
+
+
+; netstat -ano | findstr :5000
+; taskkill /PID <PID> /F
+; זה ייתן לך את ה-PID של התהליך המאזין על הפורט 5000. כעת, השתמש בפקודה כדי לסיים את התהליך:
+
+;     bash
+;     Copy code
+;     taskkill /PID <PID> /F
+;     (החלף את <PID> במספר ה-PID שמצאת מהפקודה הראשונה).
+    
+;     2. שינוי פורט בשרת
+;     אם לא תרצה או לא תוכל לשחרר את הפורט 5000, תוכל לשנות את הפורט שהשרת שלך מאזין עליו.
+    
+;     פתח את קובץ השרת שלך (server/src/index.ts או קובץ ה-Express שלך).
+    
+;     שנה את הפורט משורה זו:
+    
+;     ts
+;     Copy code
+;     const port = 5000;
+;     לפורט אחר, לדוגמה 4000:
