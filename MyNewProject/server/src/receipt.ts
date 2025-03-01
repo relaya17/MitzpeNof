@@ -1,10 +1,7 @@
-// server/src/receipt.ts
-import { Request, Response } from "express";
-import { PDFDocument } from "pdf-lib";
+import { PDFDocument } from 'pdf-lib';
 
-export const generateReceipt = async (req: Request, res: Response) => {
-  const { payer, amount, chairmanName } = req.body;
-
+// פונקציה להפקת קבלה כ-PDF
+export const generateReceipt = async (payer: string, amount: number, chairmanName: string) => {
   const pdfDoc = await PDFDocument.create();
   const page = pdfDoc.addPage([600, 400]);
 
@@ -12,28 +9,12 @@ export const generateReceipt = async (req: Request, res: Response) => {
   const fontSize = 18;
 
   page.drawText(`קבלה לתשלום`, { x: 50, y: height - 50, size: fontSize });
-  page.drawText(`שם הלקוח: ${payer}`, {
-    x: 50,
-    y: height - 80,
-    size: fontSize,
-  });
-  page.drawText(`סכום לתשלום: ${amount} ₪`, {
-    x: 50,
-    y: height - 110,
-    size: fontSize,
-  });
-  page.drawText(`יושב ראש אגודת מצפה נוף: ${chairmanName}`, {
-    x: 50,
-    y: height - 140,
-    size: fontSize,
-  });
-  page.drawText(`תאריך: ${new Date().toLocaleDateString()}`, {
-    x: 50,
-    y: height - 170,
-    size: fontSize,
-  });
+  page.drawText(`שם הלקוח: ${payer}`, { x: 50, y: height - 80, size: fontSize });
+  page.drawText(`סכום לתשלום: ${amount} ₪`, { x: 50, y: height - 110, size: fontSize });
+  page.drawText(`יושב ראש אגודת מצפה נוף: ${chairmanName}`, { x: 50, y: height - 140, size: fontSize });
+  page.drawText(`תאריך: ${new Date().toLocaleDateString()}`, { x: 50, y: height - 170, size: fontSize });
 
+  // שמירה של ה-PDF והחזרתו כ-binary (Uint8Array)
   const pdfBytes = await pdfDoc.save();
-  res.setHeader("Content-Type", "application/pdf");
-  res.send(pdfBytes);
+  return pdfBytes;
 };

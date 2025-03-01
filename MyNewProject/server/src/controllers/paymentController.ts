@@ -1,33 +1,37 @@
 import { Request, Response } from 'express';
-import Payment from '../models/paymentModel'; // מודל לתשלומים
+import Payment from '../models/paymentModel';
+import { generateReceipt } from '../receipt'; // וודא שהנתיב נכון
 
-export const addPayment = async (req: Request, res: Response) => {
-  const { payer, amount } = req.body;
-
+interface PaymentRequestBody {
+  payer: string;
+  amount: number;
+}
+export const addPayment = async (req: Request<{}, {}, PaymentRequestBody>, res: Response) => {
   try {
+    const { payer, amount }: PaymentRequestBody = req.body;
+
+    if (!payer || !amount) {
+      return res.status(400).json({ error: 'נא למלא את כל השדות' });
+    }
+
+    // יצירת אובייקט Payment חדש ושמירתו
     const newPayment = new Payment({ payer, amount });
     await newPayment.save();
-    res.status(201).json({ payment: newPayment });
-  } catch (error) {
-    res.status(500).json({ error: 'Error processing payment' });
-  }
-};
 
-export const getPayments = async (req: Request, res: Response) => {
-  try {
-    const payments = await Payment.find();
-    res.status(200).json({ payments });
-  } catch (error) {
-    res.status(500).json({ error: 'Error fetching payments' });
-  }
-};
+    // יצירת קבלה כ-PDF
+    const chairmanName = "יושב ראש אגודת מצפה נוף"; // לדוגמה
+    const pdfBytes = await generateReceipt(payer, amount, chairmanName);
 
-export const deletePayment = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  try {
-    await Payment.findByIdAndDelete(id);
-    res.status(200).json({ message: 'Payment deleted successfully' });
+    // לוודא שpdfBytes הוא Buffer ולא null או stream
+    if (Buffer.isBuffer(pdfBytes)) {
+      res.status(201)
+        .setHeader('Content-Type', 'application/pdf')
+        .send(pdfBytes);
+    } else {
+      throw new Error('קבלה לא נוצרה בצורה תקינה');
+    }
   } catch (error) {
-    res.status(500).json({ error: 'Error deleting payment' });
+    console.error('שגיאה בהוספת תשלום:', error);
+    res.status(500).json({ error: 'שגיאה בשרת, נסה שוב מאוחר יותר' });
   }
 };

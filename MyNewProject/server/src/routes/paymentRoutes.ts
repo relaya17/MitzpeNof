@@ -1,10 +1,8 @@
-import { Router } from 'express';
-import { addPayment, getPayments, deletePayment } from '../controllers/paymentController';
+import express from 'express';
+import { addPayment } from '../controllers/paymentController';
 
-const router = Router();
+const router = express.Router();
 
-router.post('/api/payments', addPayment);
-router.get('/api/payments', getPayments);
-router.delete('/api/payments/:id', deletePayment);
+router.post('/payment', addPayment);
 
 export default router;

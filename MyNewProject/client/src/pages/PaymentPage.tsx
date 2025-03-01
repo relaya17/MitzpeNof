@@ -1,6 +1,7 @@
+// pages/PaymentPage.tsx
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setPaymentDetails, addPayment } from '../redux/slice/PaymentSlice';
+import { setPaymentDetails } from '../redux/slice/PaymentSlice';
 import { RootState, AppDispatch } from '../redux/store';
 import { Button, Form, Alert } from 'react-bootstrap';
 
@@ -8,33 +9,24 @@ const PaymentPage: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const payment = useSelector((state: RootState) => state.payment);
 
-  const [cardDetails, setCardDetails] = useState({
-    cardNumber: '',
-    expiryDate: '',
-    cvv: ''
-  });
-
   const [error, setError] = useState('');
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    if (name === 'payer') {
-      dispatch(setPaymentDetails({ payer: value }));
-    } else if (name === 'amount') {
-      dispatch(setPaymentDetails({ amount: Number(value) }));
-    } else {
-      setCardDetails(prev => ({ ...prev, [name]: value }));
-    }
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!payment.payer || !payment.amount || !cardDetails.cardNumber || !cardDetails.expiryDate || !cardDetails.cvv) {
+    if (!payment.payer || !payment.amount || !payment.cardNumber || !payment.expiryDate || !payment.cvv) {
       setError('יש למלא את כל השדות');
       return;
     }
-  
-    dispatch(addPayment({ payer: payment.payer, amount: payment.amount }));
+
+    // עדכון פרטי התשלום ל-Redux
+    dispatch(setPaymentDetails({
+      payer: payment.payer,
+      amount: payment.amount,
+      cardNumber: payment.cardNumber,
+      expiryDate: payment.expiryDate,
+      cvv: payment.cvv
+    }));
+
     setError('');
     alert('תשלום בוצע בהצלחה!');
   };
@@ -49,7 +41,7 @@ const PaymentPage: React.FC = () => {
             type="text"
             name="payer"
             value={payment.payer}
-            onChange={handleInputChange}
+            onChange={(e) => dispatch(setPaymentDetails({ payer: e.target.value }))}
             required
           />
         </Form.Group>
@@ -60,7 +52,7 @@ const PaymentPage: React.FC = () => {
             type="number"
             name="amount"
             value={payment.amount}
-            onChange={handleInputChange}
+            onChange={(e) => dispatch(setPaymentDetails({ amount: Number(e.target.value) }))}
             required
           />
         </Form.Group>
@@ -70,8 +62,8 @@ const PaymentPage: React.FC = () => {
           <Form.Control
             type="password"
             name="cardNumber"
-            value={cardDetails.cardNumber}
-            onChange={handleInputChange}
+            value={payment.cardNumber}
+            onChange={(e) => dispatch(setPaymentDetails({ cardNumber: e.target.value }))}
             required
           />
         </Form.Group>
@@ -81,8 +73,8 @@ const PaymentPage: React.FC = () => {
           <Form.Control
             type="text"
             name="expiryDate"
-            value={cardDetails.expiryDate}
-            onChange={handleInputChange}
+            value={payment.expiryDate}
+            onChange={(e) => dispatch(setPaymentDetails({ expiryDate: e.target.value }))}
             required
           />
         </Form.Group>
@@ -92,8 +84,8 @@ const PaymentPage: React.FC = () => {
           <Form.Control
             type="password"
             name="cvv"
-            value={cardDetails.cvv}
-            onChange={handleInputChange}
+            value={payment.cvv}
+            onChange={(e) => dispatch(setPaymentDetails({ cvv: e.target.value }))}
             required
           />
         </Form.Group>

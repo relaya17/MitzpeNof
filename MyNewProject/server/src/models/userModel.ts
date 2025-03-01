@@ -1,15 +1,11 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose from 'mongoose';
 
-interface IPayment extends Document {
-  payer: string;
-  amount: number;
-}
-
-const paymentSchema = new Schema<IPayment>({
-  payer: { type: String, required: true },
-  amount: { type: Number, required: true }
+// יצירת מודל משתמש עם שם, אימייל, סיסמה
+const userSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
 });
 
-const Payment = mongoose.model<IPayment>('Payment', paymentSchema);
-
-export default Payment;
+const User = mongoose.model('User', userSchema);
+export default User;

@@ -1,13 +1,20 @@
+// redux/slice/PaymentSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface PaymentState {
   payer: string;
   amount: number;
+  cardNumber: string;
+  expiryDate: string;
+  cvv: string;
 }
 
 const initialState: PaymentState = {
   payer: '',
-  amount: 0
+  amount: 0,
+  cardNumber: '',
+  expiryDate: '',
+  cvv: ''
 };
 
 const paymentSlice = createSlice({
@@ -17,11 +24,10 @@ const paymentSlice = createSlice({
     setPaymentDetails: (state, action: PayloadAction<Partial<PaymentState>>) => {
       return { ...state, ...action.payload };
     },
-    addPayment: (state, action: PayloadAction<PaymentState>) => {
-      // כאן תוכל להוסיף את הלוגיקה לשליחה לשרת
-    }
+    clearPaymentDetails: () => initialState
   }
 });
 
-export const { setPaymentDetails, addPayment } = paymentSlice.actions;
+export const { setPaymentDetails, clearPaymentDetails } = paymentSlice.actions;
+
 export default paymentSlice.reducer;

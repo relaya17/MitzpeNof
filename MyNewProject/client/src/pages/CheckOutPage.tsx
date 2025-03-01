@@ -1,8 +1,9 @@
+// pages/CheckoutPage.tsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState, AppDispatch } from '../../../redux/store';
-import { setPaymentDetails, clearPaymentDetails } from '../../../redux/slice/PaymentSlice';
+import { RootState, AppDispatch } from '../redux/store';
+import { setPaymentDetails, clearPaymentDetails } from '../redux/slice/PaymentSlice';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const CheckoutPage: React.FC = () => {
