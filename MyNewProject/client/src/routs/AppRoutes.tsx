@@ -1,7 +1,7 @@
 // AppRoutes.tsx
 import React, { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
-import ROUTES from "../routs/routes";  // ייבוא הנתיבים מקובץ routes
+import ROUTES from "../routs/routes"
 import Home from "../pages/Home";
 import NewResidentApproval from "../pages/NewResidentApproval";
 import Error404Page from "../pages/404/Error404Page";
@@ -24,6 +24,8 @@ import UsersPage from "../pages/users/UI/UsersPage";
 import UserManagement from "../pages/users/UI/UserManagement";
 import CreateAdminPassword from "../pages/users/UI/CreateAdminPassword";
 import ChangeAdminPassword from "../pages/users/UI/ChangeAdminPassword";
+import CheckOutPage from "../pages/users/UI/ChangeAdminPassword";
+
 
 const AppRoutes: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -77,6 +79,7 @@ const AppRoutes: React.FC = () => {
         <Route path={ROUTES.USER_MANAGEMENT} element={<UserManagement />} />
         <Route path={ROUTES.CHANGE_ADMIN_PASSWORD} element={<ChangeAdminPassword />} />
         <Route path={ROUTES.SIGN_UP} element={<SignUpPage />} />
+        <Route path={ROUTES.CHECK_OUT} element={<CheckOutPage />} />
         <Route path="*" element={<Error404Page />} />
       </Routes>
 
