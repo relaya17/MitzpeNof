@@ -87,6 +87,7 @@
 
 
 
+
 ; netstat -ano | findstr :5000
 ; taskkill /PID <PID> /F
 ; זה ייתן לך את ה-PID של התהליך המאזין על הפורט 5000. כעת, השתמש בפקודה כדי לסיים את התהליך:
@@ -107,3 +108,8 @@
 ;     Copy code
 ;     const port = 5000;
 ;     לפורט אחר, לדוגמה 4000:
+
+
+
+Get-NetTCPConnection -LocalPort <5000>
+Get-Process -Id <PID>
